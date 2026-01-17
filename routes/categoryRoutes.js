@@ -3,7 +3,11 @@ const router = express.Router();
 const controller = require("../controllers/categoryController");
 
 router.get("/", controller.getAll);
+router.get("/:id", controller.getById);
+
 router.post("/", controller.create);
+router.post("/:id", controller.createById);
+
 router.put("/:id", controller.update);
 router.delete("/:id", controller.remove);
 
