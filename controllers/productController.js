@@ -7,6 +7,19 @@ exports.getAll = (req, res) => {
   });
 };
 
+  exports.getByCategory = (req, res) => {
+  const categoryId = req.params.categoryId;
+
+  db.query(
+    "SELECT * FROM products WHERE category_id = ?",
+    [categoryId],
+    (err, result) => {
+      if (err) return res.status(500).json(err);
+      res.json(result);
+    }
+  );
+};
+
 exports.getById = (req, res) => {
   db.query(
     "SELECT * FROM products WHERE product_id = ?",
@@ -20,6 +33,8 @@ exports.getById = (req, res) => {
     }
   );
 };
+
+  
 
 exports.create = (req, res) => {
   db.query("INSERT INTO products SET ?", req.body, err => {
