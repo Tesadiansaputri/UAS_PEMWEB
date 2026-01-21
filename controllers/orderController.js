@@ -21,8 +21,23 @@ exports.getById = (req, res) => {
   );
 };
 exports.create = (req, res) => {
-  db.query("INSERT INTO orders SET ?", req.body, err => {
-    if (err) return res.status(500).json(err);
+  console.log("BODY:", req.body);
+
+  const data = {
+    CUST_ID: req.body.cust_id,
+    ORDER_DATE: req.body.order_date + " 00:00:00",
+    USER_ID: "24090038",
+    TOTAL: req.body.total,
+    METHOD_ID: String(req.body.method_id)
+  };
+
+  console.log("DATA:", data);
+
+  db.query("INSERT INTO orders SET ?", data, err => {
+    if (err) {
+      console.log("DB ERROR:", err); 
+      return res.status(500).json(err);
+    }
     res.json({ message: "Order created" });
   });
 };

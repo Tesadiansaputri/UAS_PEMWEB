@@ -35,13 +35,27 @@ exports.getById = (req, res) => {
 };
 
   
-
 exports.create = (req, res) => {
-  db.query("INSERT INTO products SET ?", req.body, err => {
-    if (err) return res.status(500).json(err);
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
+
+  let data = {...req.body};
+
+  if (req.file) {
+    data.IMAGE = req.file.filename;
+  }
+
+  db.query("INSERT INTO products SET ?", data, err => {
+    if (err) {
+      console.log("DB ERROR:", err);
+      return res.status(500).json(err);
+    }
     res.json({ message: "Product added" });
   });
 };
+
+
+
 
 exports.createById = (req, res) => {
   const customerId = req.params.id;
@@ -62,15 +76,29 @@ exports.createById = (req, res) => {
 };
 
 exports.update = (req, res) => {
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
+  console.log("ID:", req.params.id);
+
+  let data = { ...req.body };
+
+  if (req.file) {
+    data.IMAGE = req.file.filename;
+  }
+
   db.query(
     "UPDATE products SET ? WHERE product_id=?",
-    [req.body, req.params.id],
+    [data, req.params.id],
     err => {
-      if (err) return res.status(500).json(err);
+      if (err) {
+        console.log("DB ERROR:", err); 
+        return res.status(500).json(err);
+      }
       res.json({ message: "Product updated" });
     }
   );
 };
+
 
 exports.remove = (req, res) => {
   db.query(
