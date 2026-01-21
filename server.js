@@ -9,6 +9,7 @@ app.use("/products", require("./routes/productRoutes"));
 app.use("/uploads", express.static("uploads"));
 
 
+
 app.listen(3000, () => {
   console.log("Server running on port 3000");
 });
